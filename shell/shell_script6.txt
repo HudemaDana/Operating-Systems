@@ -1,0 +1,27 @@
+finger hdie3132| grep -E -o "Directory:.*Shell"|sed -E "s/(Directory: )(.*)(Shell)/\2/"
+	-->cum scriu asta mai scurt???????????????????????????
+
+#!/bin/bash
+
+if [ $# -lt 2 ];then
+        echo NOT ENOUGH ARGUMENTS
+        exit 1
+fi
+f1=$1
+shift
+for i;do
+        if grep -E -q $i /etc/passwd
+        then
+                hm=$(finger $i|grep -E -o "Directory.*:.*Shell"|sed -E "s/(Directory.*:)(.*)(Shell)/\2/")
+                echo User $i has directories
+                while IFS= read -r line
+                do
+                        if [[ -n $(find $hm -type d -name $line) ]];then
+                                echo $(find $hm -type d -name $line)
+                        fi
+                done < "$f1"
+        else
+                echo Invalid user $i
+        fi
+done
+

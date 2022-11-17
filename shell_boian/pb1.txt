@@ -1,0 +1,8 @@
+#!/bin/bash
+
+code=`who|awk '{print $1}'|sort|uniq`
+for user in $code;do
+        processes=`finger|grep -E -c "\<$user\>"`
+        name=`finger -lm $user|grep -E -o "Name: .*"|sed -E "s/(^Name: )(.+)/\2/g"`
+        echo User $name has $processes processes
+done

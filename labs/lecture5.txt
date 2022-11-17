@@ -1,0 +1,13 @@
+zombie child --> the copy is done its process but it's kept by the processor
+
+1) Signals
+	^C -->(SIGINT)
+	^Z -->signal to suspend a process(SIGTSTP)
+
+	man 7 signal
+	signal(signal, function) -->doesn't signal, just register
+		-we have to declare the function as follows
+		 void function(int sgn){...}, where sgn is the signal transmited in function signal()
+	kill     -->actual signal
+			9 -->kill process -->you can't stop it
+			ex: kill -9 idpid

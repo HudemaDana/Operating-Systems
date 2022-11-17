@@ -1,0 +1,10 @@
+ #!/bin/bash
+
+ S=0
+ for i; do
+  for a in `find $i -type f -name "*.c"`;do
+         echo C file: $a
+         S=`expr $S + 1`
+  done
+ done
+ echo $S

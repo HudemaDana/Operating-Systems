@@ -1,0 +1,22 @@
+2.Nr de cuvinte de pe liniile pare+ nr mediu de cuvinte de pe cele impare
+
+BEGIN{
+sum=0
+nr_total =0
+sum_impare =0
+}
+{
+        if(NR%2==0){
+        for(i=1;i<=NF;i++)
+        {sum+=1}
+        }
+        else{
+        nr_total+=1
+        for(i=1;i<=NF;i++)
+        {sum_impare+=1}
+        }
+}
+END{
+        print sum
+        print sum_impare/nr_total
+}

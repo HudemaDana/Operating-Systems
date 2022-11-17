@@ -1,0 +1,31 @@
+1.Liniile care contin un numar de caractere divizibil cu 3
+	grep -E --color '^(...)*$' fisier_tf
+
+2.Liniile care contin cel putin 3 vocale mari si nu contin cifre impare
+	grep -E --color '([AEIOU].*){3,}' fisier_tf | grep -E -v --color '[13579]'
+
+3.Liniile care incep cu nr par de cifre impare
+	grep -E --color '^([13579][13579])+[^13579]' fisier_tf
+  Liniile care se termina cu nr impar de cifre pare
+	grep -E --color '([^02468](([02468][02468])+)[02468])$' fisier_tf
+	grep -E --color '([^02468]([02468]{2}+)[02468])$' fisier_tf
+
+4.Liniile care au cel mult 3 vocale mari si nu contin cifre impare
+	grep -E -v --color '([AEIOU].*){4,}' fisier_tf
+	grep -E -v --color '[13579]'
+
+5.Toate caracterele care apar intre prima aparitie a lui '|' si ultima aparitie a lui '^'
+	grep -E -o --color '(\|.*\^)' fisier_tf
+
+6.Cate linii contin numai uppercase characters
+	 grep -E -c --color '^([A-Z]*)$' fisier_tf
+	
+7.Liniile si indicele de linie acolo unde uncepe cu 2 cifre si se termina cu 2 cifre
+	 grep -E -n --color '^(([0-9]{2})[^0-9].*[^0-9]([0-9]{2}))$' fisier_tf
+
+8.Toate caracterele dintr-o linie de unde incepe secventa cu $ , $-ultima sa apritie pe linie
+	grep -E -o '(\$[^$]*)$' fisier_tf
+
+
+9.Liniile care nu contin litere sau cifre
+	grep -E --color '^([^a-zA-Z0-9]*)$' fisier_tf

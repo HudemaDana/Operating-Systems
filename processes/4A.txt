@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+#include<sys/stat.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include <ctype.h>
+
+int main(int argc, char** argv)
+{
+        int rw[2];
+        pipe(rw);
+
+        int f=fork();
+        if(f<0)
+        {
+                perror("Unable to create a child process\n");
+                exit(1);
+        }
+
+        if(f == 0)
+        {
+                int n=0;
+                printf("Type the value for n: \n");
+                scanf("%d",&n);
+
+                FILE* f_descr = fopen(argv[2],"r");
+                if(f_descr<0)
+                {
+                        perror("Unable to open file\n");
+                        exit(2);
+                }
+                close(rw[0]);
+                int nr=0;
+                while(1)
+                {
+                        char c;
+                        if(fread(&c,1,1,f_descr)<=0)
+                        {break;}
+                        if(nr==n)
+                        {
+                                write(rw[1],&c,sizeof(char));
+                                break;
+                        }
+                        nr++;
+                }
+                close(rw[1]);
+                fclose(f_descr);
+                exit(0);
+        }
+        close(rw[1]);
+        char ch;
+        if(read(rw[0],&ch,sizeof(char))<=0)
+        {
+                perror("Unablee to read from pipe\n");
+                exit(3);
+        }
+        close(rw[0]);
+        int fifo = mkfifo(argv[1],0600);
+        if(fifo<0)
+        {
+                perror("Unable to create fifo\n");
+                exit(4);
+        }
+        int descr = open(argv[1],O_WRONLY);
+        if(descr<0)
+        {
+                perror("Unable to open fifo\n");
+                exit(5);
+        }
+
+        if(isalpha(ch))
+        {
+                printf("Character %c is a letter\n",ch);
+                write(descr, &ch, sizeof(char));
+        }
+        else if(isdigit(ch))
+        {
+                printf("Character %c is a digit\n",ch);
+                write(descr, &ch, sizeof(char));
+        }
+        else
+        {
+                printf("Character %c is something else than letter or digit\n",ch);
+                write(descr, &ch, sizeof(char));
+
+        }
+        close(descr);
+        wait(0);
+        return 0;
+}

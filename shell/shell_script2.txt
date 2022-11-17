@@ -1,0 +1,31 @@
+
+SHELL SCRIPT FILE
+#!/bin/bash
+
+W=$1
+M=$2
+N=$3
+nr=0
+shift 3
+for i in $@;do
+        echo `awk -f practice.awk -v line=$N -v word=$W -v nr=$M -f practice.awk $i`
+done
+
+
+AWK FILE
+{
+        if(NR == line)
+        {
+                ap_nr=0
+                for(i=1;i<=NF;i++)
+                {
+                        if($i == word)
+                        {ap_nr+=1}
+                }
+        if(ap_nr>=nr)
+        print FILENAME
+        }
+}
+
+
+

@@ -1,0 +1,44 @@
+Barriers
+	--> wait for n threads
+		--> when it reaches the number n it moves on
+
+Semaphores
+	--> will have a value --> you can make increment (unlock)
+			--> decrement(lock) --> when it reaches 0 you can't decrement anymore
+	--> ops:    init(value) 
+		wait() --> -1 (reserve space)
+		post()-->+1 (realise space)
+	--> use it when you have more threads to do the same job at the same time
+		ex: when you have a printer and ypu don't want to let more than 3 documents to be printed you use a semaphore
+			--> when a thread is done, another one can be added
+	--> you can't lock a semaphore twice as you can do with a mutex
+	ex: if we have an elevator we consider a semaphore with the initial value the max weight(capacity)
+		--> when we put a person in the elevator (a thread) we lock its mutex, wait until it decrements with the weight of the person and the unlock the mutex
+		--> if a thread gets over the semaphore (people are heavier than the admised limit) the last person will be stuck in the wait() process so it will not get in the elevator
+
+
+--> if the mutex is locked and it gets another lock() it will wait until it is unlocked so it can be locked again
+		--> that being said, in a thing like
+
+main: lock(m2) //we choose one to start
+
+	T1			|		T2
+________________________________________________________________________
+while()				|	while()
+{				|	{
+lock(m1)	//it will wait T2 to unlock it	|	lock(m2)// it will wait T1 to unlock it
+play()				|	play()
+unlock(m2)			|	unlock(m1)
+}				|	}
+
+Deadlock
+	--> ex: multiple threads choose 2 positions in an array
+	 T1 	|	 T2
+	i = 3	|	i = 5
+	j = 5	|	j =3	--> exemple of deadlock
+	
+	--> solution for deadlock :
+		--> always lock in the same order (ascending order for exemple)
+	--> trylock i won't be an idea bcs it won't sync
+
+ diff  -q file_a file_b| echo yeah  --> is true if the files are different 

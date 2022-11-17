@@ -1,0 +1,32 @@
+sed -e "s/ce inlocuieste/ cu ce inlocuieste/g" -->inlocuieste in tot textul
+						-->nu e inlocuire permanente(e inlocuire de afisare)
+daca pun sed -ei inlocuieste permanent in text
+g -ul de la final inseamna global -- daca nu ai g i inlocuieste doar prima aparitie
+
+y in loc de s la inceput
++ -->o data sau de mai multe ori
+. -->orice caracter
+* -->de oricate ori
+-e --> pentru definirea expresiei (poti sa folosesti mai multe expresii in serie)
+-E --> pentru regex extins(daca nu folosesc -E pun cu backslash)
+\nr in "cu ce inlocuieste" --> nr e indexul grupului din "ce inlocuieste"
+
+([0-9]([a-z]))--> 2 grupuri dar care se iau ca un intreg (o cifra urmata de un caracter)
+awk --> merge pe fiecare linie a fisierului(textului) si executa codul scris in el 
+	-->se foloseste pentru textele in format tabelar
+	--> awk '{}'
+	--> separator by default --> space " "
+	--> -F --> defineste field seperator
+	--> -v --> sa predefinim variabile
+	--> -f --> ia codul dintr-un fisier
+	--> FNR --> al cata linie prelucrez
+	--> NF --> nr of field on the current line
+	--> FS --> field separator
+	--> NR --> linia curenta
+
+	--> END --> true dupa ce o terminat pargurgerea liniei
+	--> BEGGIN --> true la inceputul executiei
+		-->daca vrem sa prelucram ceva dupa sau inaintea prelucradea datelor de pe o linie
+		--> END {print "GATA";} --> afiseaza dupa ce termin linia de prelucrat GATA
+field x -->elem x de pe linia y (coloana)
+pt concatenare nu avem nevoie de operator --> luam pur si simplu: a b

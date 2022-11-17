@@ -1,0 +1,36 @@
+1.Suma numerelor de pe linii pare + media aritmetica a numerelor impare:
+
+BEGIN{
+sum=0
+nr_total =0
+sum_impare =0
+}
+{
+        if (NR % 2 == 0)
+        {
+        for( i=1; i<=NF; i++)
+                {
+
+                sum+=$i
+                if($i %2 ==1)
+                        {
+                        sum_impare+=$i
+                        nr_total++
+                        }
+                }
+
+        }
+        else{
+
+
+                if($i %2 ==1)
+                {
+                 sum_impare+=$i
+                 nr_total++
+                 }
+
+        }
+}
+END{
+        print sum
+        print sum_impare/nr_total

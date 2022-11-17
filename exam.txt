@@ -1,0 +1,35 @@
+  1 #!/bin/bash
+  2
+  3 if [ $# -lt 1 ]; then
+  4     echo MAI BAGA ARGUMENTE, SARACIE ACOLO CU INPUT-UL
+  5     exit 1
+  6 fi
+  7
+  8 max="0"
+  9 for i;do
+ 10     "$i" > file_name
+ 11     if [[ -d "$i" ]];then
+ 12         for a in `find $i -type f`;do
+ 13             if test -X $a ;then
+ 14                 echo $a
+ 15              fi
+ 16         done
+ 17         echo $(find $i -type f)
+ 18      elif `grep -E -q "^[0-9]+$" file_name`;then
+ 19             echo $i
+ 20             if [ $i > max ];then
+ 21                 max=$i
+ 22             fi
+ 23
+ 24     else
+ 25              echo IS NOR A DIRECTORY OR A NUMBER
+ 26     fi
+ 27     true > file_name
+ 28 done
+ 29
+ 30 if [ max != "0" ];then
+ 31     echo Max number found is $max
+ 32 else
+ 33     echo No number read from input
+ 34 fi
+ 35

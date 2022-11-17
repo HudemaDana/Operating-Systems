@@ -1,0 +1,50 @@
+mutex
+            --> lock 
+	<critical sections>
+	unlock
+
+rwlock
+          -->  rlock(shared locking)  -->many can get a readlock but nobody can get a writelock(see the data)
+	wlock(exclusive locking) -->the only one getting a readlock or a writelock(change the data)
+	unlock
+rdlock --> read critical resurces --> unlock
+wrlock --> change critical resources --> unlock
+
+
+
+threads on a single list -->safety using threads on it
+	-->  lock when we start to do a change for the critical variable and unlock when we finish with it
+	       so we threads con't get one over another while makeing any operation
+
+write_lock -->used when we are changing the structure of the list (append, delete etc)
+read_lock -->when we just want to see the element without doing any change (see if a element exists in the list,update)
+			--> update --> change the node, not the list so it's a read one for the list and another mutex for the node(???)
+
+trick --> :redo 
+
+
+conditional variables
+we have a mutex m and a conditional variable c 
+1. Notifier
+	lock(m)
+	change v
+	IF(v ... ) { signal(c) }
+	unlock(m)
+//lock and unlock to protect data changed in v
+	
+2. Waiter
+	lock(m)
+	while(!v...){ wait(c,m) }
+	// things to do when it wakes up
+	unlock(m)
+// wait is doing -->   | unlock(m)
+		| really wait
+		| lock(m)
+//because we have this lock unlock in wait (there will be a fight for threads to get there) we don't know if we will get a thread that
+ has the condition changed, so we use a while that will look back to see if everything indeplineste conditia (cpu poate sa inverseze linii de cod 
+in ideea de a face totul mai performant, deoarece totul se petrece intr-un timp foarte scurt  --> trebe sa dam check la conditie pana cand e inplinita,
+adica pana cand dunt facuti pasii corespunzatori)
+
+
+
+

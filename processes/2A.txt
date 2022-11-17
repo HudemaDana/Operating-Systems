@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+#include<sys/stat.h>
+#include<unistd.h>
+#include<fcntl.h>
+
+int cmmdc(int a, int b)
+{
+        int r;
+        while(b)
+        {
+                r=a%b;
+                a=b;
+                b=r;
+        }
+        return a;
+}
+
+int main(int argc, char** argv)
+{
+        int nr1=0,nr2=0;
+        printf("Type first number: ");
+        scanf("%d",&nr1);
+
+        printf("Type second number: ");
+        scanf("%d",&nr2);
+
+        int c = cmmdc(nr1, nr2);
+        int fifo = mkfifo(argv[1],0600);
+        if(fifo<0)
+        {
+                perror("Unable to create fifo\n");
+                exit(1);
+        }
+
+        int descr = open(argv[1],O_WRONLY);
+        if(descr<0)
+        {
+                perror("Unable to open fifo\n");
+                exit(2);
+        }
+        write(descr,&c,sizeof(int));
+        close(descr);
+
+        return 0;
+}

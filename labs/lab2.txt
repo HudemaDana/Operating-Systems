@@ -1,0 +1,27 @@
+-Wall --> shows the warnings
+
+--------------------------------------
+gcc -Wall -g -o 2.c 2.c
+ 	-->se pierde codul sursa (e inlocuit de executabil) --> nu mai merge codul
+	--> primul nu se pune cu extensie
+./Nume_executabil
+	--> pui parametrii de intrare dupa el
+
+--------------------------------------
+argc - argument count
+argv -argument vector
+daca vreau caracter cu spatiu pun ghilimele ""
+--------------------------------------
+
+implicit declaration of function --> you don't use a needed library (use the manual to see what you need)
+control reaches end non-void function --> you don't return something
+--------------------------------------
+
+
+malloc --> memory allocation
+valgrind nume_executabil -->arata memory leak
+** --> pointer de pointer (matrice)
+
+
+test --> matrice dinamica (malloc si free) --> avem de identificat si corectat codul dat
+de lucrat cu alloc si malloc

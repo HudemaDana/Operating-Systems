@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -lt 3 ]; then
+        echo YOU DON.T HAVE ENOUGH ARGUMENTS
+        exit 1
+fi
+
+f1=$1
+f2=$2
+
+true>$f1
+true>$f2
+
+shift 2
+for i;do
+ if grep -E -q $i /etc/passwd
+ then
+        echo `finger $i| grep -E -o "Name:.*"`>>$f1
+        echo `du|finger $i| grep -E -o "Directory:.*Shell"|sed -E "s/(Directory:.*)(Shell)/\1/"`>>$f1
+ else
+        echo Invalid username $i>>$f2
+ fi

@@ -1,0 +1,25 @@
+	
+3. Se da un fisier care contine doar numere (oricate numere pe linie, fisierul
+poate contine oricate lini). Folosind utilitarul AWK afisati pe ecran suma
+primului si ultimului numar de pe linile care contin un numar par de numere
+si media aritmetica a numerelor de pe pozitia din mijloc de pe liniile care
+contin un numar impar de numere.
+
+BEGIN{
+primul =0
+ultimul =0
+}
+{
+        if(NF%2 ==0)
+        {
+        print  ($1),($NF)
+        }
+        else
+        {
+        sum+=$((NF+1)/2)
+        nr+=1
+        }
+}
+END{
+        print sum/nr
+}

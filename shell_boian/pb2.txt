@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ok=0
+nr=500
+for i in `find $1 -type f -name "*.c"`;do
+        ceva=`wc -l $i|awk '{print $1}'`
+        if [ $ceva  -ge $nr ];then
+                if test $ok -lt 2;then
+                        ok=`expr $ok + 1`
+                        echo FILE $i
+                else
+                        break
+                fi
+        fi
+done
+
+if test $ok -lt 2;then
+        echo THERE ARE NOT 2 FILES WITH 500 LINES
+fi

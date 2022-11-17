@@ -1,0 +1,32 @@
+ppid - parent id is 1 because parent process is finished before the child
+	-this is called a zombie process == orphan process - a child process without a parent process
+
+to avoid zombie process we have to wait for the child process --> wait() -command
+	-wait() -->parent process waits for the child to finish its process then die
+
+Shell commands
+1.find 
+	-->search and locate a list of files&directories based on conditions you specify
+2.wc(word count)
+	-->used to find nr of lines(-l),words(),bytes(-c),characters(-m),the max len(-L)
+	-->ls file_name|wc -l --> gonna display on the screen the number of lines that should have been displayed by ls command 
+	-->wc -w < file_name  --> operator < goes in the file_name and apply the command to data in it
+3.cut
+	-->used to cut sections of each line of a file
+	--> -b(byte) / -c(column)
+4.finger
+	-->gives details about all the users logged in
+5.sort
+	-->used for sorting
+	-->options: -o(output to a new file --> sort -o new_file file_name)
+		    -r(reverse sort)
+		    -n(sort numerically -->sort data with numeric data inside it)
+		    -nr(sort numerically reverse)
+		    -k(sort basis of any column name --> sort -k 2n (n-numerically) file_name)
+		    -c(check if a list is sorted or not)
+		    -u(sort and removes duplicates)
+6.uniq
+	-->reports/filters out the repeated lines in a file
+	-->options -c(count how many times a line was repeated)
+		   -d(print just duplicates)
+		   

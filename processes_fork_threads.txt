@@ -1,0 +1,18 @@
+Signals --> 	^C(SIGNINT) --> interrupting the command at that point -->interrupt from keyboard
+		^Z --> interrupting the process
+
+kill() -->signals
+signal() --> just process --> if you doing signal(SIGNINT,f), where f is a function, 
+				the given signal will be replaced by the function f
+					--> overwriting the signal 
+
+Pipes --> buffers in the kernel memory (kernel memory --> a part of the available emory in the computer that is blocked off for the OS processes)
+	--> is like a file that it comes already opened
+	--> you have 2 file descriptors -->0 -->read
+					-->1 -->write
+	--> work like a first in first out(FIFO)
+	--> when you read from a pipe, data is removed from there and read() command returns the len of what was read
+	--> has limitations commpared to fifo -->work for processes that have a relationship(???)
+
+Fifo --> talk between unrelated processes
+	-->they are files (you have to open, close etc)

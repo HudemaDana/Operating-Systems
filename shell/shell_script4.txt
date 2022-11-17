@@ -1,0 +1,25 @@
+SHELL SCRIPT
+
+#!/bin/bash
+
+n=$1
+shift
+true > file_name
+for i;do
+        if grep -E -q -o "\#include.*<.+>" $i
+        then
+                grep -E -o "\#include.*<.+>" $i|sed -E  "s/(#include(.*)<)(.+)(>)/\3/">>file_name
+                echo File $i has inclusions ` grep -E -o "\#include.*<.+>" $i|sed -E  "s/(#include(.*)<)(.+)(>)/\3/"`
+        else
+                echo No inclusions in file $i
+        fi
+done
+sort file_name|uniq -c|sort -k1 -nr|awk -v n=$n -f practice.awk
+
+
+AWK COMMAND
+
+{
+        if(NR<=n)
+        {print $0}
+}

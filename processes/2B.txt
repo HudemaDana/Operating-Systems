@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+#include<sys/stat.h>
+#include<unistd.h>
+#include<fcntl.h>
+
+int main(int argc, char** argv)
+{
+        int rw[2];
+        pipe(rw);
+
+        int f= fork();
+        if(f<0)
+        {
+                perror("Unable to create child process\n");
+                exit(1);
+        }
+        if(f==0)
+        {
+                int descr = open(argv[1],O_RDONLY);
+                if(descr<0)
+                {
+                        perror("Unable to open fifo\n");
+                        exit(2);
+                }
+                int c=0;
+                if(read(descr,&c,sizeof(int))<0)
+                {
+                        perror("Unable to read from file\n");
+                        exit(3);
+                }
+                close(descr);
+                close(rw[0]);
+                int d=1;
+                printf("%d\n",c);
+                for(d=1;d*d<=c;d++)
+                {
+                        if(c%d==0)
+                        {
+                                int nr=c/d;
+                                printf("%d %d\n",d,nr);
+                                write(rw[1],&d,sizeof(int));
+                                write(rw[1],&nr,sizeof(int));
+                        }
+                }
+                close(rw[1]);
+                exit(0);
+
+        }
+        printf("trebe sa citim numerele din pipe\n");
+        close(rw[1]);
+        while(1)
+        {
+                int nr;
+                if(read(rw[0],&nr,sizeof(int))<=0)
+                {
+                        printf("No more to read\n");
+                        break;
+                }
+                printf("DIVISOR: %d\n",nr);
+        }
+        close(rw[1]);
+        unlink(argv[1]);
+        return 0;
+}

@@ -1,0 +1,87 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<pthread.h>
+
+int *arr;
+pthread_mutex_t* m;
+typedef struct
+{
+char* File;
+int id;
+pthread_cond_t* c;
+}args;
+
+void* f1(void* a)
+{
+args f = *(args*)a;
+//free(a);
+
+FILE* fd = fopen(f.File,"r");
+
+int a1,b;
+fscanf(fd,"%d",&a1);
+fscanf(fd,"%d",&b);
+fclose(fd);
+
+while(arr[f.id]<b)
+{
+printf("Thread %d is adding %d to array.\n",f.id,a1);
+arr[f.id]+=a1;
+}
+
+pthread_cond_signal(f.c);
+
+return NULL;
+}
+
+void* f2(void* a)
+{
+args f = *(args*)a;
+//free(a);
+int nr = f.id;
+pthread_cond_wait(f.c,&m[nr]);
+printf("Thread %d finished his job. Global variable id %d\n",f.id,arr[nr]);
+pthread_mutex_unlock(&m[nr]);
+
+return NULL;
+}
+
+int main(int argc,char** argv)
+{
+arr = malloc(argc*sizeof(int));
+m = malloc(argc*sizeof(pthread_mutex_t));
+int i;
+for(i=0;i<argc;i++)
+{arr[i]=0;}
+for(i=1;i<argc;i++)
+{
+
+pthread_t x,y;
+pthread_mutex_init(&m[i-1],NULL);
+pthread_cond_t cd= PTHREAD_COND_INITIALIZER;
+
+args a;
+a.File = argv[i];
+a.id = i-1;
+a.c = &cd;
+
+pthread_mutex_lock(&m[i-1]);
+
+pthread_create(&x,NULL,f1,&a);
+pthread_create(&y,NULL,f2,&a);
+
+pthread_join(x,NULL);
+pthread_join(y,NULL);
+}
+
+for(i=0;i<argc-1;i++)
+{
+pthread_mutex_destroy(&m[i]);
+}
+
+//free(m);
+//free(arr);
+return 0;
+}

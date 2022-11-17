@@ -1,0 +1,9 @@
+www.cs.ubbcluj.ro/~rares/os
+touch <path>
+mkdir <path>
+cp
+mv
+rm
+vim <path> i esc
+
+daca dai din greseala ^s da ^q

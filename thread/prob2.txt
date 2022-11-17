@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<ctype.h>
+#include<pthread.h>
+
+int l,d;
+pthread_mutex_t ml,md;
+typedef struct
+{
+char* file;
+}args;
+
+void* thread(void* a)
+{
+args f;
+f = *(args*)a;
+
+FILE* fd;
+fd = fopen(f.file,"r");
+
+char c;
+while(fscanf(fd,"%c",&c)!=EOF)
+{
+if(isdigit(c))
+{
+pthread_mutex_lock(&md);
+d++;
+pthread_mutex_unlock(&md);
+}
+else if(isalpha(c))
+{
+pthread_mutex_lock(&ml);
+l++;
+pthread_mutex_unlock(&ml);
+}
+}
+
+fclose(fd);
+free(a);
+return NULL;
+}
+
+int main(int argc,char** argv)
+{
+pthread_t* t;
+t = malloc(argc*sizeof(pthread_t));
+
+pthread_mutex_init(&ml,NULL);
+pthread_mutex_init(&md,NULL);
+
+int i;
+for(i=1;i<argc;i++)
+{
+args* a;
+a =malloc(sizeof(args));
+a->file = argv[i];
+pthread_create(&t[i-1],NULL,thread,(void*)a);
+}
+
+for(i=0;i<argc-1;i++)
+{
+pthread_join(t[i],NULL);
+}
+
+pthread_mutex_destroy(&ml);
+pthread_mutex_destroy(&md);
+
+free(t);
+
+printf("NUMBER LETTERS:%d \n NUMBER DIGITS:%d \n",l,d);
+return 0;
+}
